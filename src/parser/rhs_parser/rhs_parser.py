@@ -174,16 +174,21 @@ class RhsPlantsParser:
                 processed_chunks += 1
 
                 plant_link_path = urlparse(plant_link).path.split('/')
+
+                if len(plant_link_path) != 5:
+                    logging.error(f'!!! {plant_link} - BAD LINK !!!')
+                    continue
+
                 file_path = f'parsed_data/{plant_link_path[2]}-{plant_link_path[3]}.json'.replace('--', '-')
                 if os.path.exists(file_path):
-                    logging.info(f'<{self.plant_name}> - already parsed (startFrom={chunk_size})')
+                    logging.info(f'{file_path} - already parsed (startFrom={chunk_size})')
                     continue
 
                 self.parser.get_url(plant_link)
                 self.plant_name = self.parser.get_element_attr(cfg.PLANT_NAME, 'text')
 
                 if not self.plant_name:
-                    logging.warning(f'!!! {plant_link} - NOT FOUND !!!')
+                    logging.error(f'!!! {plant_link} - NOT FOUND !!!')
                     continue
 
                 logging.info(f'<{self.plant_name}> - processing (startFrom={chunk_size})')
