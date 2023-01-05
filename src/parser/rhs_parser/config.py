@@ -1,6 +1,6 @@
 class Configuration:
     RHS_SEARCH_URL = 'https://www.rhs.org.uk/search?query={}'
-    RHS_HOUSEPLANT_URL = 'https://www.rhs.org.uk/plants/search-results?form-mode=true&plantTypes=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21&pageSize=50&startFrom={}'
+    RHS_HOUSEPLANT_URL = 'https://www.rhs.org.uk/plants/search-results?form-mode=true&plantTypes={plant_type}&pageSize=50&startFrom={start_from}'
 
     COLORS_ROWS = ('stem', 'flower', 'foliage', 'fruit')
     COLORS_SEASONS = ('spring', 'summer', 'autumn', 'winter')

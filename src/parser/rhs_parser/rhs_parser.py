@@ -163,51 +163,54 @@ class RhsPlantsParser:
     def grab_data(self):
         cfg = self.cfg
 
-        chunk_size = 0
-        processed_chunks = 0
+        for plant_type in range(1, 22):
+            chunk_size = 0
+            processed_chunks = 0
 
-        while True:
-            self.parser.get_url(self.cfg.RHS_HOUSEPLANT_URL.format(chunk_size))
+            while True:
+                self.parser.get_url(self.cfg.RHS_HOUSEPLANT_URL.format(plant_type=plant_type, start_from=chunk_size))
 
-            for plant_link in self.parser.get_elements_attr(cfg.PLANT_CARD, 'href'):
-                plant_info = {}
-                processed_chunks += 1
+                for plant_link in self.parser.get_elements_attr(cfg.PLANT_CARD, 'href'):
+                    plant_info = {}
+                    processed_chunks += 1
 
-                plant_link_path = urlparse(plant_link).path.split('/')
+                    plant_link_path = urlparse(plant_link).path.split('/')
 
-                if len(plant_link_path) != 5:
-                    logging.error(f'!!! {plant_link} - BAD LINK !!!')
-                    continue
+                    if len(plant_link_path) != 5:
+                        logging.error(f'!!! {plant_link} - BAD LINK !!!')
+                        continue
 
-                file_path = f'parsed_data/{plant_link_path[2]}-{plant_link_path[3]}.json'.replace('--', '-')
-                if os.path.exists(file_path):
-                    logging.info(f'{file_path} - already parsed (startFrom={chunk_size})')
-                    continue
+                    file_path = f'parsed_data/{plant_link_path[2]}-{plant_link_path[3]}.json'.replace('--', '-')
+                    if os.path.exists(file_path):
+                        logging.info(f'{file_path} - already parsed (startFrom={chunk_size})')
+                        continue
 
-                self.parser.get_url(plant_link)
-                self.plant_name = self.parser.get_element_attr(cfg.PLANT_NAME, 'text')
+                    self.parser.get_url(plant_link)
+                    self.plant_name = self.parser.get_element_attr(cfg.PLANT_NAME, 'text')
 
-                if not self.plant_name:
-                    logging.error(f'!!! {plant_link} - NOT FOUND !!!')
-                    continue
+                    if not self.plant_name:
+                        logging.error(f'!!! {plant_link} - NOT FOUND !!!')
+                        continue
 
-                logging.info(f'<{self.plant_name}> - processing (startFrom={chunk_size})')
+                    logging.info(f'<{self.plant_name}> - processing (startFrom={chunk_size})')
 
-                plant_info['link'] = plant_link
-                plant_info['main_name'] = self.plant_name
-                plant_info['tags'] = self.parser.get_elements_attr(cfg.PLANT_TAGS, 'text')
-                plant_info['names'] = self.get_other_names_info()
-                plant_info['size'] = self.get_plant_size_info()
-                plant_info['growing_conditions'] = self.get_growing_conditions_info()
-                plant_info['colour_and_scent'] = self.get_colour_and_scent_info()
-                plant_info['position'] = self.get_position_info()
-                plant_info['botanical_details'] = self.get_botanical_details_info()
-                plant_info['how_to_grow'] = self.get_how_to_grow_info()
+                    plant_info['link'] = plant_link
+                    plant_info['main_name'] = self.plant_name
+                    plant_info['tags'] = self.parser.get_elements_attr(cfg.PLANT_TAGS, 'text')
+                    plant_info['names'] = self.get_other_names_info()
+                    plant_info['size'] = self.get_plant_size_info()
+                    plant_info['growing_conditions'] = self.get_growing_conditions_info()
+                    plant_info['colour_and_scent'] = self.get_colour_and_scent_info()
+                    plant_info['position'] = self.get_position_info()
+                    plant_info['botanical_details'] = self.get_botanical_details_info()
+                    plant_info['how_to_grow'] = self.get_how_to_grow_info()
 
-                with open(file_path, 'w', encoding='UTF-8') as fp:
-                    json.dump(plant_info, fp, indent=4)
+                    with open(file_path, 'w', encoding='UTF-8') as fp:
+                        json.dump(plant_info, fp, indent=4)
 
-            if chunk_size > processed_chunks:
-                break
+                if chunk_size > processed_chunks:
+                    break
 
-            chunk_size += 50
+                chunk_size += 50
+
+            logging.info(f'*** plantType={plant_type} - completed, processed ~{chunk_size} ***')
