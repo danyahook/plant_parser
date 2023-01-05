@@ -182,7 +182,7 @@ class RhsPlantsParser:
 
                     file_path = f'parsed_data/{plant_link_path[2]}-{plant_link_path[3]}.json'.replace('--', '-')
                     if os.path.exists(file_path):
-                        logging.info(f'{file_path} - already parsed (startFrom={chunk_size})')
+                        logging.info(f'{file_path} - already parsed (plantType={plant_type} startFrom={chunk_size})')
                         continue
 
                     self.parser.get_url(plant_link)
@@ -192,7 +192,7 @@ class RhsPlantsParser:
                         logging.error(f'!!! {plant_link} - NOT FOUND !!!')
                         continue
 
-                    logging.info(f'<{self.plant_name}> - processing (startFrom={chunk_size})')
+                    logging.info(f'<{self.plant_name}> - processing (plantType={plant_type} startFrom={chunk_size})')
 
                     plant_info['link'] = plant_link
                     plant_info['main_name'] = self.plant_name
