@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 from parser.rhs_parser.config import Configuration
@@ -173,11 +174,16 @@ class RhsPlantsParser:
                 self.parser.get_url(plant_link)
                 self.plant_name = self.parser.get_element_attr(cfg.PLANT_NAME, 'text')
 
+                file_path = 'parsed_data/' + self.plant_name.replace('/', '_') + '.json'
+                if os.path.exists(file_path):
+                    logging.info(f'<{self.plant_name}> - already parsed (startFrom={chunk_size})')
+                    continue
+
                 if not self.plant_name:
                     logging.warning(f'!!! {plant_link} - NOT FOUND !!!')
                     continue
 
-                logging.info(f'<{self.plant_name}> - processing')
+                logging.info(f'<{self.plant_name}> - processing (startFrom={chunk_size})')
 
                 plant_info['link'] = plant_link
                 plant_info['main_name'] = self.plant_name
@@ -190,7 +196,7 @@ class RhsPlantsParser:
                 plant_info['botanical_details'] = self.get_botanical_details_info()
                 plant_info['how_to_grow'] = self.get_how_to_grow_info()
 
-                with open('parsed_data/' + self.plant_name.replace('/', '_') + '.json', 'w', encoding='UTF-8') as fp:
+                with open(file_path, 'w', encoding='UTF-8') as fp:
                     json.dump(plant_info, fp, indent=4)
 
             if chunk_size > processed_chunks:
