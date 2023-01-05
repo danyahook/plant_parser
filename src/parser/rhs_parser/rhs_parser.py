@@ -1,9 +1,11 @@
 import os
 import json
 import logging
+
 from parser.rhs_parser.config import Configuration
 from parser.rhs_parser.helpers import clear_text
 from parser.selenium_wrapper import ParserSeleniumWrapper
+from urllib.parse import urlparse
 
 logging.basicConfig(
     level=logging.INFO,
@@ -171,13 +173,14 @@ class RhsPlantsParser:
                 plant_info = {}
                 processed_chunks += 1
 
-                self.parser.get_url(plant_link)
-                self.plant_name = self.parser.get_element_attr(cfg.PLANT_NAME, 'text')
-
-                file_path = 'parsed_data/' + self.plant_name.replace('/', '_') + '.json'
+                plant_link_path = urlparse(plant_link).path.split('/')
+                file_path = f'parsed_data/{plant_link_path[2]}-{plant_link_path[3]}.json'.replace('--', '-')
                 if os.path.exists(file_path):
                     logging.info(f'<{self.plant_name}> - already parsed (startFrom={chunk_size})')
                     continue
+
+                self.parser.get_url(plant_link)
+                self.plant_name = self.parser.get_element_attr(cfg.PLANT_NAME, 'text')
 
                 if not self.plant_name:
                     logging.warning(f'!!! {plant_link} - NOT FOUND !!!')
