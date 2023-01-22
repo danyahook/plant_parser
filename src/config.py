@@ -1,4 +1,10 @@
+from os.path import dirname, realpath
+
+
 class Configuration:
+    PARSE_DATA_DIR_PATH = dirname(realpath(__file__)) + '/plants_data/'
+
+    # RHS
     RHS_SEARCH_URL = 'https://www.rhs.org.uk/search?query={}'
     RHS_HOUSEPLANT_URL = 'https://www.rhs.org.uk/plants/search-results?form-mode=true&plantTypes={plant_type}&pageSize=50&startFrom={start_from}'
 
@@ -38,3 +44,19 @@ class Configuration:
     COLOR_COLUMNS_TABLE = '/html/body/div/div/app-root/app-plant-details-page/lib-plant-details-full/section[1]/div/div/div[3]/div/div[3]/div[2]/table/tr/th'
 
     QWE_COLOR = '/html/body/div/div/app-root/app-plant-details-page/lib-plant-details-full/section[1]/div/div/div[3]/div/div[3]/div[2]/table/tr[{seasons}]/td[{c_type}]/span/span[2]'
+
+    # PT
+    PICTURE_THIS_AI_URL = 'https://cms-fullsearch-service.picturethisai.com/api/v1/cmsfullsearch/cms_full_search?searchText={search_text}&languageCode={language_code}&countryCode=Other'
+
+    HEAD_ITEMS_CLASS_NAME = 'basic-information-item'
+    HEAD_ITEMS_CLASS_NAME_TEXT = 'basic-information-item-content-text'
+    HEAD_ITEMS_CLASS_NAME_TITLE = 'basic-information-item-content-title'
+
+    CARE_ITEMS_CLASS_NAME = 'care-guide-download-item-content'
+    CARE_ITEMS_CLASS_NAME_TEXT = 'care-guide-download-item-text-2'
+    CARE_ITEMS_CLASS_NAME_TITLE = 'care-guide-download-item-text-1'
+
+    CLASS_ITEMS = 'taxonomy-item'
+
+    TOXIC_ITEM = 'toxic-item-information-title'
+    DISEASES_ITEM = 'diseases-basic-information-title'

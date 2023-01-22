@@ -1,13 +1,16 @@
-from parser.rhs_parser import rhs_parser
+import os
+from parser import PtPlantsParser
 
-PARSERS = [
-    rhs_parser,
-]
+from models import PlantNames, create_tables
+from utils.helpers import parse_jsons_to_db_plants
 
 
 def main():
-    for obj in PARSERS:
-        obj.grab_data()
+    create_tables()
+    parse_jsons_to_db_plants()
+
+    rhs_parser = PtPlantsParser()
+    rhs_parser.get_parse_data()
 
 
 if __name__ == '__main__':

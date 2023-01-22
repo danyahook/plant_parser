@@ -1,11 +1,13 @@
-import os
 import json
 import logging
-
-from parser.rhs_parser.config import Configuration
-from parser.rhs_parser.helpers import clear_text
-from parser.selenium_wrapper import ParserSeleniumWrapper
+import os
 from urllib.parse import urlparse
+
+from config import Configuration
+from utils.helpers import clear_text
+from utils.selenium_wrapper import ParserSeleniumWrapper
+
+from .base_parser import BaseParser
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,10 +19,9 @@ logging.basicConfig(
 )
 
 
-class RhsPlantsParser:
+class RhsPlantsParser(BaseParser):
     def __init__(self):
-        self.cfg = Configuration()
-        self.parser = ParserSeleniumWrapper()
+        super().__init__()
 
         self.plant_name = None
 
@@ -65,7 +66,7 @@ class RhsPlantsParser:
 
         for soil_element in self.parser.get_elements(cfg.SOIL_PARAMS_KEY):
             soil_key = self.parser.get_element_attr(value='.//h6', attr='text', find_in=soil_element)
-            
+
             if not soil_key:
                 logging.warning(f'<{self.plant_name}> not found SOIL_PARAMS_KEY (.//h6)')
                 continue
@@ -160,7 +161,7 @@ class RhsPlantsParser:
 
         return colour_and_scent_info
 
-    def grab_data(self):
+    def get_parse_data(self):
         cfg = self.cfg
 
         for plant_type in range(1, 22):
