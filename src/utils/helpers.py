@@ -1,3 +1,4 @@
+import typing as t
 import json
 import logging
 import re
@@ -25,10 +26,10 @@ class PtResponse(pydantic.BaseModel):
     pt_link: str
     filename: str
     latin_name: str = pydantic.Field(..., alias='latinName')
-    common_names: list | None = pydantic.Field([], alias='commonNames')
-    synonyms: list | None = pydantic.Field([])
-    ru_data: PtRuResponse | None = pydantic.Field({})
-    rank: int | None = pydantic.Field(default=999999)
+    common_names: t.Optional[list] = pydantic.Field([], alias='commonNames')
+    synonyms: t.Optional[list] = pydantic.Field([])
+    ru_data: t.Optional[PtRuResponse] = pydantic.Field({})
+    rank: t.Optional[int] = pydantic.Field(default=999999)
 
 
 def clear_text(text: str) -> str:
