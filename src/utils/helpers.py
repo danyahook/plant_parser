@@ -27,7 +27,7 @@ class PtResponse(pydantic.BaseModel):
     latin_name: str = pydantic.Field(..., alias='latinName')
     common_names: list = pydantic.Field([], alias='commonNames')
     synonyms: list = pydantic.Field([])
-    ru_data: PtRuResponse
+    ru_data: PtRuResponse = pydantic.Field({})
     rank: int = pydantic.Field(default=999999)
 
 
