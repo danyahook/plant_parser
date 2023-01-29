@@ -15,6 +15,7 @@ class Configuration:
 
     PLANT_TAGS = '/html/body/div/div/app-root/app-plant-details-page/lib-plant-details-full/section[1]/div/div/div[1]/div/div[2]/div/span'
     PLANT_NAME = '/html/body/div/div/app-root/app-plant-details-page/lib-plant-details-full/section[1]/div/div/div[2]/div/div[1]/div[1]/div/h1/span'
+    PLANT_DISPLAY_NAME = '/html/body/div/div/app-root/app-plant-details-page/lib-plant-details-full/section[1]/div/div/div[2]/div/div[1]/div[1]/div/p[1]'
     PLANT_NAMES = '/html/body/div/div/app-root/app-plant-details-page/lib-plant-details-full/section[1]/div/div/div[2]/div/div[1]/div[2]/div/div/div[1]/div'
 
     PLANT_SIZE = '/html/body/div/div/app-root/app-plant-details-page/lib-plant-details-full/section[1]/div/div/div[3]/div/div[1]/div[2]/div/div/div/div/div[2]'

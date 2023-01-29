@@ -1,2 +1,3 @@
 from parser.pt_parser import PtPlantsParser
 from parser.rhs_parser import RhsPlantsParser
+from parser.rhs_pre_parser import RhsPrePlantsParser
