@@ -55,6 +55,9 @@ class RhsPrePlantsParser(BaseParser):
                 with open(file_path + file_name, 'r', encoding='UTF-8') as file_data:
                     plant_data = json.load(file_data)
 
+                if plant_data.get('display_name'):
+                    continue
+
                 self.plant_name = plant_data["main_name"]
 
                 logging.info(f'<{plant_data["main_name"]}> - processing ({file_name})')
