@@ -64,7 +64,8 @@ class RhsPrePlantsParser(BaseParser):
                 self.parser.get_url(plant_data['link'])
 
                 plant_data['main_name_original'] = self.parser.get_element_attr(cfg.PLANT_NAME, 'text')
-                plant_data['display_name'] = self.parser.get_element_attr(cfg.PLANT_DISPLAY_NAME, 'text').capitalize()
+                plant_data['display_name'] = self.parser. \
+                    get_element_attr(cfg.PLANT_DISPLAY_NAME, 'text', default='').capitalize()
 
                 if plant_data.get('how_to_grow'):
                     plant_data['how_to_grow'] = self.get_how_to_grow_info()
