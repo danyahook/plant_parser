@@ -51,9 +51,9 @@ def get_pt_plant_url():
 
     for file_name in listdir(file_path):
         if isfile(join(file_path, file_name)):
-            with open(join(file_path, file_name), 'r') as file_data:
+            with open(join(file_path, file_name), 'r', encoding='UTF-8') as file_data:
                 fcc_data = json.load(file_data)
-                if plant_name := fcc_data.get('main_name'):
+                if plant_name := fcc_data.get('clear_main_name'):
                     response = requests.get(
                         Configuration.PICTURE_THIS_AI_URL.format(search_text=plant_name, language_code='0')
                     )
@@ -85,9 +85,9 @@ def parse_jsons_to_db_plants():
         db_data = []
         for number, file_name in enumerate(listdir(file_path)):
             if isfile(join(file_path, file_name)):
-                with open(file_path + file_name, 'r') as file_data:
+                with open(file_path + file_name, 'r', encoding='UTF-8') as file_data:
                     plant_data = json.load(file_data)
-                    db_data.append({'plant_name': plant_data['main_name'], 'file_name': file_name})
+                    db_data.append({'plant_name': plant_data['pt_search_main_name'], 'file_name': file_name})
                     file_data.close()
             if number % 10000 == 0:
                 PlantNames.insert_many(db_data).execute()

@@ -84,16 +84,17 @@ class PtPlantsParser(BaseParser):
                     attr='text',
                     find_in=class_item,
                 )
-                if ', ' in class_value:
+                if class_key == 'order':
                     class_value = [
-                        class_value_item.removeprefix('and ').capitalize() for class_value_item in class_value.split(', ')
+                        class_value_item.capitalize()
+                        for class_value_item in class_value.replace(', ', '@').replace(' and ', '@').split('@')
                     ]
                 class_data[class_key] = class_value
         return class_data
 
     def get_toxic_data(self) -> list:
         cfg = self.cfg
-        return self.parser.get_elements_attr(cfg.TOXIC_ITEM, 'text', By.CLASS_NAME)
+        return list(map(lambda s: s.strip(), self.parser.get_elements_attr(cfg.TOXIC_ITEM, 'innerHTML', By.CLASS_NAME)))
 
     def get_common_pests_and_diseases(self):
         cfg = self.cfg
@@ -114,10 +115,11 @@ class PtPlantsParser(BaseParser):
             pt_data['toxic_data'] = self.get_toxic_data()
             pt_data['diseases_data'] = self.get_common_pests_and_diseases()
 
-            with open(join(self.cfg.PARSE_DATA_DIR_PATH, plant_data.filename), 'r') as file:
+            with open(join(self.cfg.PARSE_DATA_DIR_PATH, plant_data.filename), 'r', encoding='UTF-8') as file:
                 file_data = json.load(file)
 
             file_data['pt_data'] = pt_data
 
             with open(join(self.cfg.PARSE_DATA_DIR_PATH, plant_data.filename), 'w', encoding='UTF-8') as file:
                 json.dump(file_data, file, indent=4, ensure_ascii=False)
+        logging.info('====== PARSE COMPETED ======')
